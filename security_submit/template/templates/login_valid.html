@@ -1,0 +1,22 @@
+<p>This username-password combination is valid, welcome back {{name}}!</p>
+<p>Your friends are
+% friends = list
+
+<ul>
+    % for friend in friends:
+    <p><li><a href="/send/{{friend}}">{{friend}}</a></li><br>
+    </p>
+    % end
+</ul>
+</p>>
+
+
+<!-- <p> Click here to <a href="/send">send message</a></p> -->
+<p> Click here to <a href="/incoming/{{name}}">your incoming message</a></p>
+
+
+
+
+
+
+

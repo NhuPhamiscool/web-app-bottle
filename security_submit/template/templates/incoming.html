@@ -1,0 +1,125 @@
+<!-- <p>All of your incoming messages are below:</p>
+
+% message = list
+
+<ul>
+    % for mess in message:
+    <p><li>{{mess}}</li><br>
+    </p>
+    % end
+</ul>
+</p>> -->
+
+<style>
+    table, th, td {
+        border: 1px solid;
+        border-collapse: collapse;
+    }
+    td:hover{
+        color: blue;
+        text-decoration: underline;
+    }
+    table {
+        table-layout: auto;
+        width: 50%;
+    }
+</style>
+
+<link rel="stylesheet" type="text/css" href="/css/temp.css">
+
+<p>All of your incoming encrypted messages are below, please select a message to decrypt it:</p>
+
+<!-- Testing purposes -->
+% message_list = list
+% if not message_list:
+<p>You have no messages!</p>
+% else:
+<table name="messages" >
+    <thead>
+      <tr>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+        % for n in range(len(message_list)):
+        <tr>
+            <td name= "message_{{n}}" onclick="decrypt(`{{n}}`)" > {{message_list[n]}} </td>
+        </tr>
+        % end
+    </tbody>
+  </table>
+% end
+
+
+<script>
+    
+    // Importing the private key of a user from cookies
+    function importPrivateKey(jwk) {
+        return window.crypto.subtle.importKey("jwk", jwk,
+            {
+                name: "RSA-OAEP",
+                hash: "SHA-256"
+            },
+            false,
+            ["decrypt"]
+        );
+    }
+    // Function to retrieve cookies from app
+    function getWebKey(username) {
+        // let name = username + "=";
+        let decoded_cookies = decodeURIComponent(document.cookie);
+        let cookie_array = decoded_cookies.split(';');
+        for (cookie in cookie_array){
+            crumb = cookie.split('=');
+            // Check for username matching
+            if (crumb[0]==username) {
+                return crumb[1]
+            }
+        }
+    }
+
+    // source: https://stackoverflow.com/a/11058858
+    async function decryptRSA(key, ciphertext) {
+        let decrypted = await window.crypto.subtle.decrypt(
+            {
+                name: "RSA-OAEP"
+            },
+            key,
+            ciphertext
+        );
+        return new TextDecoder().decode(decrypted);
+    }
+    function str2ab(str) {
+        const buf = new ArrayBuffer(str.length);
+        const bufView = new Uint8Array(buf);
+        for (let i = 0, strLen = str.length; i < strLen; i++) {
+            bufView[i] = str.charCodeAt(i);
+        }
+        return buf;
+    }
+        
+    function ab2str(buf) {
+        return String.fromCharCode.apply(null, new Uint8Array(buf));
+    }
+
+    // Retrieve cookies and webkeys
+    const j_web_key = JSON.parse(getWebKey(username))
+
+    // Storing the messages to decrypt
+    const messages =  `{{message_list}}`;
+    function decrypt(n){  
+        const to_decrypt = messages[n];
+        const m_id = "message_".concat(n.toString());    
+        
+        // Attempt decryption
+        try {
+            const privateKey = importPrivateKey(j_web_key);
+            const plaintext = await decryptRSA(priv, str2ab(window.atob(to_decrypt)));
+            // Replace ciphertext with plaintext
+            document.messages.m_id.textContent = decrypted;
+            console.log(decrypted);
+        } catch(error) {
+            console.log(error);
+        }
+    };    
+</script>

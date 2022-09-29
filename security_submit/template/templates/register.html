@@ -1,0 +1,48 @@
+<p>Register with a username and password</p>
+<p>
+<form action="/register" id= "register" name="register" method="post" onsubmit="createAndExportKey();">
+    Username: <input name="username" type="text" id="username"/>
+</br>
+    Password: <input name="password" type="password" />
+</br>
+    <input type="hidden" id="PublicKey" name="PublicKey" value="Error!!!" />
+    <input value="Register" type="submit"/>
+</form>
+</p>
+</center>
+<script>
+    function createAndExportKey(){
+        
+        crypto.subtle.generateKey(
+            {
+                name: "RSA-OAEP",
+                modulusLength: 2048,
+                publicExponent: new Uint8Array([1, 0, 1]),
+                hash: "SHA-256"
+            },
+            true,
+            ["encrypt", "decrypt"]
+            ).then(function(keyPair) {
+                // Export private key
+                
+                crypto.subtle.exportKey('jwk', keyPair.privateKey).then(function(jwk) {
+                    let jsonString = JSON.stringify(jwk);
+                    let name =  document.register.username.value;
+                    document.cookie = name + "=" + jsonString;
+                    alert("Your Cookie : " + document.cookie);
+                    // console.log(jsonString)
+                });
+                // Export public key
+                crypto.subtle.exportKey("spki",keyPair.publicKey).then(function(result) {
+                    console.log("jk");
+                    const exportedAsString = String.fromCharCode.apply(null, new Uint8Array(result))
+                    const exportedAsBase64 = window.btoa(exportedAsString);
+                    document.register.PublicKey.value = exportedAsBase64;
+                    // console.log(document.register.PublicKey.textContent)
+                    document.register.submit();
+                });
+            });
+        // console.log(keyPair)
+        return true;
+    };
+</script>

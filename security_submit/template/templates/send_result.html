@@ -1,0 +1,206 @@
+<p>You have sent message to {{name}} successfully!!</p>
+<!-- <script id="encrypted" type="module">
+    // let importedPub;
+    let encryptedBase64;
+    const pemEncodedKey = `{{pubkey}}`;
+
+    importPublicKeyAndEncrypt();
+    import SQLDatabase from './template/sql.py';
+    var sql_db = SQLDatabase("user1.db");
+    sql_db.add_mess(`{{name}}`, encryptedBase64);
+    // var db = openDatabase('user1.db', '1.0', 'Test DB', 2 * 1024 * 1024);
+    // db.transaction(function (tx) {   
+    //     // console.log('kokokokokoko');
+    //     // tx.executeSql('CREATE TABLE IF NOT EXISTS Encrypt (receiver, ciphermessages)');
+    //     tx.executeSql('INSERT INTO Encrypt (receiver, ciphermessages) VALUES (?, ?)', [`{{name}}`, encryptedBase64]); 
+    
+    // }, function successCB() {
+    //     alert("values are stored!");
+    // }, function errorCB() { 
+    //     alert("Error!");
+    // }
+    // );    
+    
+    
+    async function importPublicKeyAndEncrypt() {
+        const messageBox = document.getElementById("mess");
+        let message = messageBox;
+        let enc = new TextEncoder();
+        var mess = enc.encode(message);
+
+        try {
+            const pub = await importPublicKey(pemEncodedKey);
+            const encrypted = await encryptRSA(pub, mess);
+            encryptedBase64 = window.btoa(ab2str(encrypted));
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", "https://info2222.go:8081/send", true);
+            // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            // xhr.send(encryptedBase64);
+            // return encryptedBase64;
+            // var db = openDatabase('mess.db', '1.0', 'Test DB', 2 * 1024 * 1024);
+            // db.transaction(function (tx) {   
+            //     console.log('kokokokokoko');
+            //     tx.executeSql('CREATE TABLE IF NOT EXISTS Encrypt (receiver, ciphermessages)');
+            //     tx.executeSql('INSERT INTO Encrypt (receiver, ciphermessages) VALUES (?, ?)', [`{{name}}`, encryptedBase64]); 
+            //     console.log(encryptedBase64);
+            // // });
+            //     // commit();
+            //     // tx.executeSql('SELECT * FROM Encrypted', [], function (tx, results) {
+            //     // var len = results.rows.length, i;
+            //     // console.log("huhu");
+            //     // console.log(len);
+            //     // console.log("bishhh");
+                
+            //     }, function successCB() {
+            //     alert("values are stored!");
+            //     }, function errorCB() {
+            //     alert("Error!");
+            //     }
+            // );    
+            // });
+            // });
+            console.log(encryptedBase64.replace(/(.{64})/g, "$1\n")); 
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    function ab2str(buf) {
+        return String.fromCharCode.apply(null, new Uint8Array(buf));
+    }
+
+
+    async function importPublicKey(spkiPem) {       
+        return await window.crypto.subtle.importKey(
+            "spki",
+            getSpkiDer(spkiPem),
+            {
+                name: "RSA-OAEP",
+                hash: "SHA-256",
+            },
+            true,
+            ["encrypt"]
+        );
+    }
+
+    async function encryptRSA(key, plaintext) {
+        let encrypted = await window.crypto.subtle.encrypt(
+            {
+                name: "RSA-OAEP"
+            },
+            key,
+            plaintext
+        );
+        return encrypted;
+    }
+
+    function getSpkiDer(spkiPem){
+        const pemHeader = "-----BEGIN PUBLIC KEY-----";
+        const pemFooter = "-----END PUBLIC KEY-----";
+        var pemContents = spkiPem.substring(pemHeader.length, spkiPem.length - pemFooter.length);
+        var binaryDerString = window.atob(pemContents);
+        return str2ab(binaryDerString); 
+    }
+
+
+    function str2ab(str) {
+        const buf = new ArrayBuffer(str.length);
+        const bufView = new Uint8Array(buf);
+        for (let i = 0, strLen = str.length; i < strLen; i++) {
+            bufView[i] = str.charCodeAt(i);
+        }
+        return buf;
+    } -->
+
+    <!-- // function importPublicKey(pem) {
+    // // fetch the part of the PEM string between header and footer
+    //     const pemHeader = "-----BEGIN PUBLIC KEY-----";
+    //     const pemFooter = "-----END PUBLIC KEY-----";
+    //     const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length);
+    //     // base64 decode the string to get the binary data
+    //     const binaryDerString = window.atob(pemContents);
+    //     // convert from a binary string to an ArrayBuffer
+    //     const binaryDer = str2ab(binaryDerString);
+
+    //     return window.crypto.subtle.importKey(
+    //         "spki",
+    //         binaryDer,
+    //         {
+    //         name: "RSA-OAEP",
+    //         hash: "SHA-256"
+    //         },
+    //         true,
+    //         ["encrypt"]
+    //     );
+    // };
+    // encryptionKey = importPublicKey(pemEncodedKey);
+    // console.log(typeof(encryptionKey));
+    // function removeLines(str) {
+    //     return str.replace("\n", "");
+    // }
+
+    // function base64ToArrayBuffer(b64) {
+    //     var byteString = window.atob(b64);
+    //     var byteArray = new Uint8Array(byteString.length);
+    //     for(var i=0; i < byteString.length; i++) {
+    //         byteArray[i] = byteString.charCodeAt(i);
+    //     }
+
+    //     return byteArray;
+    // }
+
+    // function pemToArrayBuffer(pem) {
+    //     var b64Lines = removeLines(pem);
+    //     var b64Prefix = b64Lines.replace('-----BEGIN PUBLIC KEY-----', '');
+    //     var b64Final = b64Prefix.replace('-----END PUBLIC KEY-----', '');
+
+    //     return base64ToArrayBuffer(b64Final);
+    // }
+
+    // window.crypto.subtle.importKey(
+    //     "spki",
+    
+    //     {
+    //         name: "RSA-OAEP",
+    //         hash: {name: "SHA-256"} // or SHA-512
+    //     },
+    //     true,
+    //     ["decrypt"]
+    // ).then(function(importedPublicKey) {
+    //     console.log(importedPublicKey);
+    // }).catch(function(err) {
+    //     console.log(err);
+    // });
+    // // -------
+
+    // let ciphertext;
+
+    // function getMessageEncoding() {
+    //     const messageBox = document.getElementById("mess");
+    //     let message = messageBox;
+    //     let enc = new TextEncoder();
+    //     return enc.encode(message);
+    // }
+
+    // async function encryptMessage() {
+    //     let encoded = getMessageEncoding();
+    //     ciphertext = await window.crypto.subtle.encrypt(
+    //         {
+    //         name: "RSA-OAEP"
+    //         },
+    //         encryptionKey,
+    //         encoded
+    //     );
+    // };
+    // ciphertext = encryptMessage();
+    // // .then(response => response.text())
+    // // .then(data => {
+    // console.log("helloooo");
+    // console.log(ciphertext);
+    // var db = openDatabase('user1.db', '1.0', 'Test DB', 2 * 1024 * 1024);
+    // db.transaction(function (tx) {   
+    //     tx.executeSql('INSERT INTO Encrypted (receiver, ciphermessages) VALUES (?, ?'), ['{{name}}', ciphertext]; 
+        
+    // }); --> 
+
+ <!-- </script>  -->
