@@ -1,0 +1,49 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="css/valid.css">
+    <script src="js/script_head.js"></script> 
+    
+    <img src="img/welcome.jpg" height="80%">
+    
+    <center><p>This username-password combination is valid, welcome!</p>
+    
+</head>
+    <div id="mess_box" style="position: relative; display: none;">
+        <div style="position: absolute; width:300px ; height:220px; top:0; right:50px;">
+        <div id="box_list_msg" style="width: 100%; height: 80%; overflow-y: scroll; border: 1px solid black; border-radius: 5px;">
+
+        </div>
+        <div style="display:flex ;">
+            <input id="input" style="width: 82%;" placeholder="type here...">
+            <button id="send" style="float: right;">Send</button>
+        </div>
+        
+        </div>
+    </div>
+    <p>Your friends are
+        % friends = list
+
+        <ul class="friends" >
+            % for friend in friends:
+            <li><img class="friends__img" src="img/imp-faces.jpg"><p>{{friend}}</p><a onclick="mess()" class="friends__a" href="#">Send {{friend}} a message</a></li>
+            % end
+        </ul>
+    </p>
+    
+      <script>
+          function mess () {
+            let getEl_msgbox = document.getElementById("mess_box").style.display;
+            if(getEl_msgbox == 'none'){
+              document.getElementById("mess_box").style.display = 'block';
+            }else if(getEl_msgbox == 'block') {
+              document.getElementById("mess_box").style.display = 'none';
+            }
+          }
+          document.getElementById('send').addEventListener('click',function(){
+            const msg = document.getElementById('input').value;
+            const node = document.createElement('p');
+            const text_node = document.createTextNode(msg);
+            node.appendChild(text_node)
+            document.getElementById('box_list_msg').appendChild(node)
+            document.getElementById('input').value = ""
+          })
+      </script>

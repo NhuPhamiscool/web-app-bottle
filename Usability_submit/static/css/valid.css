@@ -1,0 +1,45 @@
+.friends li, .friends__a {
+    background-color: white;
+    color: black;
+
+}
+
+.friends {
+    display: grid;
+    background-color: white;
+    list-style-type: disc;
+}
+
+.friends .friends__a {
+    margin-left: 20px;
+}
+
+.friends .friends__a:hover {
+    background-color: white;
+    color: blue;
+    text-decoration: underline blue;
+}
+
+.friends li {
+    
+    display: flex;
+    align-items : center;
+
+    /* display: block; */
+    
+}
+
+.friends li p {
+    width: 20%;
+}
+
+.friends .friends__img {
+    width: 40px;
+    height: 40px;
+    margin: 0px 15px;
+}
+
+.textbox {
+    height: 200px;
+    width: 500px;
+}

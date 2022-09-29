@@ -1,0 +1,238 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="css/valid.css">
+</head>
+<body>
+    <div class="topnav">
+        <input type="text" placeholder="Search question...">
+    </div>
+    
+    <div class="make_question">
+        <p id="make_question">Ask a question here</p>
+    </div>
+
+    <div style="display: flex; ">
+
+        <div id="box" class="box">
+            <textarea id="qns_box" class="textbox" style="width: 300px; height: 80px; resize: none"></textarea>
+            <div class="submit"><button id="submit_button" style="float: right; margin-top: 5px;">Submit</button></div>
+        </div>
+
+        <div id="qns_container" class="qns_list" style="border: 1px solid black; width: 100%; height: calc(100vh - 200px); margin-left: 50px;">
+            <ol id="qns_list">
+            
+            </ol>
+        </div>
+    </div>
+
+    <script>
+
+        document.getElementById("submit_button").addEventListener("click", function questions () {
+        // get data qns from input 
+        let question = document.getElementById("qns_box").value
+        let Data = []
+        // get data from localstorage
+        let storage = localStorage.getItem('qns')
+
+        // clear then renew post container
+        const element = document.getElementById("qns_list");
+        element.remove(); 
+        const node = document.createElement("ol");
+        node.setAttribute("id","qns_list");
+        node.style.display = "inline-grid";
+        document.getElementById("qns_container").appendChild(node);
+        // check conditions 
+        if(storage) {
+          let parse = JSON.parse(storage) // when have data in localStorage -> you must be parse this
+          let newData = parse
+          newData.push(question)
+          localStorage.setItem('qns', JSON.stringify(newData)) //before setdata to localstorage -> Json.stringify 
+          // loop data -> create element in post container
+          newData.map(item =>{
+              const node = document.createElement("li");
+              const textnode = document.createTextNode(item);
+              node.appendChild(textnode);
+              document.getElementById("qns_list").appendChild(node);
+          })
+        }else {
+          let newData = Data
+          newData.push(question)
+          localStorage.setItem('qns', JSON.stringify(newData)) //before setdata to localstorage -> Json.stringify 
+          // loop data -> create element in post container
+          newData.map(item =>{ 
+            const node = document.createElement("li");
+            const textnode = document.createTextNode(item);
+            node.appendChild(textnode);
+            document.getElementById("qns_list").appendChild(node);
+          })
+        }
+        document.getElementById("qns_box").value = null
+      })
+
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="topnav">
+      <input id="search" type="search" onkeyup= "startSearch()" placeholder="Search Question...">
+  </div>
+  
+  <div class="make_question">
+      <p id="make_question">Ask a question here</p>
+  </div>
+
+  <div style="display: flex; ">
+
+      <div id="box" class="box">
+          <textarea id="qns_box" class="textbox" style="width: 300px; height: 80px; resize: none"></textarea>
+          <div class="submit"><button id="submit_button" style="float: right; margin-top: 5px;">Submit</button></div>
+      </div>
+
+      <div id="qns_container"  class="qns_list" style="border: 1px solid black; width: 100%; height: calc(100vh - 200px); margin-left: 50px;">
+          <ol id="qns_list">
+            
+          </ol>
+      </div>
+  </div>
+
+  <script>
+    document.getElementById("submit_button").addEventListener("click", function questions () {
+    // get data qns from input 
+    let question = document.getElementById("qns_box").value
+    let Data = []
+    // get data from localstorage
+    let storage = localStorage.getItem('qns')
+    });
+    function renderPostQns (e){
+      if(e){
+        
+        // clear then renew post container
+        const element = document.getElementById("qns_list");
+        element.remove(); 
+        const node = document.createElement("ol");
+        node.setAttribute("id","qns_list");
+        document.getElementById("qns_container").appendChild(node);
+        const storage = localStorage.getItem('qns')
+        const searchQns = e.target.value
+        if(storage){
+          const Data = JSON.parse(storage)
+          Data.map(item =>{
+            const check = item.includes(searchQns)
+            if(check){
+              const node = document.createElement("li");
+              const textnode = document.createTextNode(item);
+              const input = document.createElement("input");
+              input.style.cssText = "width:300px; height:15px; margin:0px 20px;"
+              const btn = document.createElement("button");
+              const textbtn = document.createTextNode('Answer');
+              btn.appendChild(textbtn)
+              node.appendChild(textnode);
+              node.appendChild(input);
+              node.appendChild(btn);
+              node.style.cssText = "margin:20px 0px; width:100%"
+              document.getElementById("qns_list").appendChild(node);
+            }
+          })
+        }
+      }else {
+        // clear then renew post container
+        const element = document.getElementById("qns_list");
+        element.remove(); 
+        const node = document.createElement("ol");
+        node.setAttribute("id","qns_list");
+        document.getElementById("qns_container").appendChild(node);
+        const storage = localStorage.getItem('qns')
+        if(storage){
+          const Data = JSON.parse(storage)
+          Data.map(item =>{
+            const node = document.createElement("li");
+            const textnode = document.createTextNode(item);
+            const input = document.createElement("input");
+            input.style.cssText = "width:300px; height:15px; margin:0px 20px;"
+            const btn = document.createElement("button");
+            const textbtn = document.createTextNode('Answer');
+            btn.appendChild(textbtn)
+            node.appendChild(textnode);
+            node.appendChild(input);
+            node.appendChild(btn);
+            node.style.cssText = "margin:20px 0px; width:100%"
+            document.getElementById("qns_list").appendChild(node);
+          })
+        }
+      } 
+      document.getElementById("qns_box").value = null
+    }
+    renderPostQns()
+    document.getElementById("submit_button").addEventListener("click", function questions () {
+      // get data qns from input 
+      let question = (document.getElementById("qns_box").value).trim()
+      let Data = []
+      // get data from localstorage
+      let storage = localStorage.getItem('qns')
+      // check conditions 
+      if(storage) {
+        let parse = JSON.parse(storage) // when have data in localStorage -> you must be parse this
+        let newData = parse
+        let index = newData.findIndex((el)=> el === question)
+
+        if(index === -1 && question !== ''){
+          newData.push(question)
+          localStorage.setItem('qns', JSON.stringify(newData)) //before setdata to localstorage -> Json.stringify 
+        }else {
+          if(index !== -1){
+            alert('This question already exist, please! ask another question')
+          }
+          if(question === ''){
+            alert('You have not asked the question! ')
+          } 
+        }
+      }else {
+        let newData = Data
+        newData.push(question)
+        localStorage.setItem('qns', JSON.stringify(newData)) //before setdata to localstorage -> Json.stringify 
+      }
+      renderPostQns()
+    })
+    document.getElementById('search').addEventListener('keyup', renderPostQns) 
+  </script>
+  <!-- <script>
+    // Initial search function - not case sensitive
+    function startSearch() {
+          var input, filter, questions_list, posts, a, i, textValue;
+          input = document.getElementById("search");
+          filter = input.value.toUpperCase();
+          questions_list = document.getElementById("qns_list");
+          posts = questions_list.getElementsByTagName("li");
+
+          for (i = 0; i < posts.length; i++) {
+            //   a = posts[i].getElementsByTagName("li")[0];
+            a = posts[i];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                posts[i].style.display = "";
+            }
+            else {
+                posts[i].style.display = "none";
+            }
+          }
+      }
+  </script> -->
+</body>
+  
+</html>
